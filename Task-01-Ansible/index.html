@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevOps Deployment Dashboard</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #0b1120;
+  --panel: #121c30;
+  --border: #26344d;
+  --text: #e8eef8;
+  --muted: #96a6bf;
+  --accent: #63a8ff;
+  --green: #35d39a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Inter, Segoe UI, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 6%;
+  border-bottom: 1px solid var(--border);
+  background: #0e1728;
+}
+.brand { font-size: 19px; font-weight: 700; }
+.brand span { color: var(--accent); }
+.pill {
+  border: 1px solid #245d4c;
+  background: #12382f;
+  color: #72edbd;
+  padding: 7px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+main { max-width: 1150px; margin: auto; padding: 35px 22px; }
+.eyebrow {
+  color: var(--accent);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+h1 { font-size: clamp(27px, 4vw, 38px); margin: 10px 0; }
+.subtitle { color: var(--muted); line-height: 1.7; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 17px;
+  margin-top: 28px;
+}
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 21px;
+}
+.card h3 { color: var(--muted); font-size: 13px; font-weight: 500; margin: 0 0 17px; }
+.value { font-size: 22px; font-weight: 700; margin-bottom: 9px; }
+.note { color: var(--muted); font-size: 12px; line-height: 1.6; }
+.green { color: var(--green); }
+.blue { color: var(--accent); }
+.layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 17px;
+  margin-top: 18px;
+}
+@media (max-width: 750px) { .layout { grid-template-columns: 1fr; } }
+.section-title { font-size: 17px; margin: 0 0 17px; }
+button {
+  background: var(--accent);
+  color: #071326;
+  font-weight: 700;
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 15px;
+  cursor: pointer;
+}
+button:hover { filter: brightness(1.1); }
+button:disabled { opacity: .6; cursor: wait; }
+.health-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+#healthResult { margin-top: 14px; color: var(--muted); font-size: 13px; }
+.pipeline { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.stage {
+  flex: 1;
+  min-width: 85px;
+  text-align: center;
+  padding: 12px 6px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  font-size: 12px;
+}
+.stage span { display: block; color: var(--green); margin-top: 7px; }
+.log { list-style: none; padding: 0; margin: 0; }
+.log li {
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.log li:last-child { border-bottom: 0; }
+.time { color: var(--muted); font-size: 11px; display: block; margin-bottom: 4px; }
+footer { text-align: center; padding: 25px; color: var(--muted); font-size: 12px; }
+code { color: #b8d6ff; }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><span>◈</span> DevOps Console</div>
+  <div class="pill">● Application Dashboard</div>
+</header>
+
+<main>
+  <div class="eyebrow">Deployment overview</div>
+  <h1>Ansible Docker Dashboard</h1>
+  <p class="subtitle">
+    A lightweight view of your containerized application deployed with Ansible,
+    Docker, and Nginx on AWS EC2.
+  </p>
+
+  <section class="grid">
+    <article class="card">
+      <h3>APPLICATION</h3>
+      <div class="value green">Available</div>
+      <div class="note">This dashboard page has loaded successfully.</div>
+    </article>
+    <article class="card">
+      <h3>DEPLOYMENT TOOL</h3>
+      <div class="value">Ansible</div>
+      <div class="note">Configuration and container deployment automation.</div>
+    </article>
+    <article class="card">
+      <h3>CONTAINER PLATFORM</h3>
+      <div class="value">Docker</div>
+      <div class="note">Image: <code>ansible-cicd-demo:v1</code></div>
+    </article>
+    <article class="card">
+      <h3>WEB SERVER</h3>
+      <div class="value">Nginx</div>
+      <div class="note">Container port 80 · Host port 8080</div>
+    </article>
+  </section>
+
+  <section class="layout">
+    <article class="card">
+      <h2 class="section-title">Application health check</h2>
+      <p class="note">Send a request to this page to verify that the web server responds.</p>
+      <div class="health-row">
+        <span class="note">HTTP response test</span>
+        <button id="checkButton" onclick="checkHealth()">Run health check</button>
+      </div>
+      <div id="healthResult" role="status" aria-live="polite">Waiting for your first check.</div>
+    </article>
+
+    <article class="card">
+      <h2 class="section-title">Deployment pipeline</h2>
+      <div class="pipeline">
+        <div class="stage">Source<span>● Ready</span></div>
+        <div class="stage">Docker<span>● Image</span></div>
+        <div class="stage">Ansible<span>● Deployed</span></div>
+      </div>
+      <p class="note" style="margin-top:16px">
+        This is a status overview, not an automated CI/CD pipeline. Jenkins integration
+        can be added in a later task.
+      </p>
+    </article>
+  </section>
+
+  <section class="layout">
+    <article class="card">
+      <h2 class="section-title">Deployment details</h2>
+      <ul class="log">
+        <li><span class="time">CONTAINER IMAGE</span>bsudarshan7/ansible-cicd-demo:v1</li>
+        <li><span class="time">CONTAINER NAME</span>ansible-demo-auto</li>
+        <li><span class="time">PORT MAPPING</span><code>8080 → 80</code></li>
+        <li><span class="time">DEPLOYMENT METHOD</span>Ansible playbook + Docker container</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <h2 class="section-title">Activity log</h2>
+      <ul class="log" id="activityLog">
+        <li><span class="time">PAGE LOAD</span>Dashboard loaded in the browser.</li>
+        <li><span class="time">DEPLOYMENT</span>Deployment information displayed.</li>
+      </ul>
+    </article>
+  </section>
+</main>
+
+<footer>DevOps Internship Project · Ansible + Docker + Nginx</footer>
+
+<script>
+function addActivity(message) {
+  const list = document.getElementById("activityLog");
+  const item = document.createElement("li");
+  const time = document.createElement("span");
+  time.className = "time";
+  time.textContent = new Date().toLocaleTimeString();
+  item.appendChild(time);
+  item.appendChild(document.createTextNode(message));
+  list.prepend(item);
+}
+
+async function checkHealth() {
+  const button = document.getElementById("checkButton");
+  const result = document.getElementById("healthResult");
+  button.disabled = true;
+  result.textContent = "Checking application response...";
+  try {
+    const response = await fetch(window.location.href, {
+      method: "GET",
+      cache: "no-store"
+    });
+    if (response.ok) {
+      result.textContent = "Healthy — the web server returned HTTP " + response.status + ".";
+      result.style.color = "#35d39a";
+      addActivity("Health check passed — HTTP " + response.status + ".");
+    } else {
+      result.textContent = "Response received, but HTTP status is " + response.status + ".";
+      result.style.color = "#ffcc66";
+      addActivity("Health check returned HTTP " + response.status + ".");
+    }
+  } catch (error) {
+    result.textContent = "Health check failed. Check the connection and try again.";
+    result.style.color = "#ff8e8e";
+    addActivity("Health check failed.");
+  } finally {
+    button.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
