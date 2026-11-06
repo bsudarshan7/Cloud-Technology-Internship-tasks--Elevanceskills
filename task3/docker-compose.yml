@@ -1,0 +1,20 @@
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: task3-nginx
+    ports:
+      - "${SITE_PORT:-8080}:80"
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html:ro
+    restart: unless-stopped
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: task3-watchtower
+    profiles:
+      - updates
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 300 --cleanup
+    restart: unless-stopped
