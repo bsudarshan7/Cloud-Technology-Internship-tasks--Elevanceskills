@@ -1,45 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jenkins CI/CD Deployment</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cloud & DevOps CI/CD Deployment Pipeline</title>
   <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      font-family: Arial, sans-serif;
-      background: #f4f7fb;
-      color: #1f2937;
-    }
-
-    main {
-      max-width: 700px;
-      margin: 20px;
-      padding: 40px;
-      text-align: center;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    }
-
-    h1 {
-      margin: 0 0 16px;
-      color: #16a34a;
-    }
-
-    p {
-      margin: 0;
-      color: #64748b;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background: #0f172a; color: #f8fafc; line-height: 1.6; }
+    header { background: linear-gradient(135deg, #1e293b, #0284c7); padding: 3.5rem 1.5rem; text-align: center; border-bottom: 1px solid #334155; }
+    header h1 { font-size: 2.4rem; margin-bottom: 0.5rem; }
+    header p { color: #cbd5e1; font-size: 1.1rem; max-width: 700px; margin: 0 auto; }
+    .badge { display: inline-block; background: #22c55e; color: #052e16; font-weight: 700; padding: 0.3rem 0.9rem; border-radius: 999px; font-size: 0.85rem; margin-bottom: 1rem; }
+    .container { max-width: 1100px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+    .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; transition: transform 0.2s; }
+    .card:hover { transform: translateY(-4px); border-color: #38bdf8; }
+    .card h3 { color: #38bdf8; margin-bottom: 0.6rem; font-size: 1.15rem; }
+    .card p { color: #94a3b8; font-size: 0.95rem; }
+    .pipeline-bar { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 2rem; margin-top: 2.5rem; }
+    .pipeline-bar h2 { margin-bottom: 1.2rem; font-size: 1.4rem; }
+    .stages { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+    .stage { background: #0f172a; border: 1px solid #22c55e; color: #4ade80; padding: 0.75rem 1.25rem; border-radius: 8px; font-weight: 600; }
+    .arrow { color: #64748b; font-weight: bold; }
+    footer { text-align: center; padding: 2rem; color: #64748b; font-size: 0.9rem; border-top: 1px solid #1e293b; margin-top: 3rem; }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Jenkins CI/CD Pipeline Deployed Successfully!</h1>
-    <p>The application was built and deployed automatically.</p>
+  <header>
+    <span class="badge">LIVE PRODUCTION BUILD • V2.0</span>
+    <h1>Automated CI/CD Pipeline Architecture</h1>
+    <p>Built automatically via GitHub Webhooks, Jenkins Declarative Pipeline, Docker Engine, and Docker Hub Registry.</p>
+  </header>
+
+  <main class="container">
+    <section class="grid">
+      <div class="card">
+        <h3>1. Source Control (GitHub)</h3>
+        <p>Code commits pushed to the <strong>main</strong> branch immediately dispatch a JSON webhook payload to Jenkins.</p>
+      </div>
+      <div class="card">
+        <h3>2. CI Orchestration (Jenkins)</h3>
+        <p>Declarative <code>Jenkinsfile</code> checks out the latest commit and executes containerized build stages automatically.</p>
+      </div>
+      <div class="card">
+        <h3>3. Container Build (Docker)</h3>
+        <p>Packages static assets into a lightweight <code>nginx:alpine</code> container image tagged with the Jenkins build number.</p>
+      </div>
+      <div class="card">
+        <h3>4. Artifact Registry (Docker Hub)</h3>
+        <p>Pushes versioned and <code>latest</code> container images securely to the <strong>instantprachi</strong> namespace.</p>
+      </div>
+    </section>
+
+    <section class="pipeline-bar">
+      <h2>Execution Stage Flow</h2>
+      <div class="stages">
+        <div class="stage">✔ GitHub Push Event</div>
+        <span class="arrow">→</span>
+        <div class="stage">✔ Checkout SCM</div>
+        <span class="arrow">→</span>
+        <div class="stage">✔ Docker Build</div>
+        <span class="arrow">→</span>
+        <div class="stage">✔ Docker Hub Push</div>
+      </div>
+    </section>
   </main>
+
+  <footer>
+    Deployed via Jenkins Declarative Pipeline • Namespace: instantprachi
+  </footer>
 </body>
 </html>
